@@ -38,13 +38,13 @@ AoC25Mojo/
 
 Before running solutions, download the input files from [adventofcode.com](https://adventofcode.com/2025).
 
-There is a "generate.py" you can run to wipe out all of my solutions and start fresh. See "Basic Usage".
-
 For each day, save two files in the `inputs/` directory:
 - `test{NN}.txt` - The example input from the problem description
 - `full{NN}.txt` - Your actual puzzle input
 
 ### 2. Implement Solutions
+
+There is a "generate.py" you can run to wipe out all of my solutions and start fresh. See "Basic Usage".
 
 Each day is a separate file in `solutions/`. Open `day01.mojo` and implement:
 
