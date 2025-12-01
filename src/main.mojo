@@ -6,6 +6,8 @@ import day01, day02, day03, day04, day05, day06, day07, day08, day09, day10, day
 
 #from python import Python
 
+comptime ALL_DAYS: List[Int] = [1,2,3,4,5,6,7,8,9,10,11,12]
+
 fn parseDays(str: StringSlice) -> List[Int]:
     var days = str.split(",")
     var n = len(days)
@@ -14,10 +16,11 @@ fn parseDays(str: StringSlice) -> List[Int]:
         try:
             var temp = Int(day)
             if temp == 0:
-                return [1,2,3,4,5,6,7,8,9,10,11,12] # no need to process the others, run all
+                return materialize[ALL_DAYS]() # no need to process the others, run all
             result.append(temp)
         except e:
             print(e)
+
     return result.copy()
 
 fn runSoln(day: Int, mode: String) -> Result:
@@ -83,16 +86,18 @@ fn run(days: List[Int], mode: String) -> List[Result]:
 fn main():
     var args = sys.argv()
     var argc = len(args)
-    var days: List[Int] = []
+    var days: List[Int] = materialize[ALL_DAYS]()
     var mode = MODE_FULL
 
     if argc > 1:
         if args[1] == "--help":
             print("./main -d -m, -d is the day[s] you want (separated by commas e.g. 1,2,3), and the mode is either 'test' or 'full' or 'both'")
-        days = parseDays(args[1])
+            return
+        else:    
+            days = parseDays(args[1])
         if argc > 2:
             mode = String(args[2]).lower()
-
+    print(days.__str__())
     var results = run(days, mode)
 
     for result in results:
