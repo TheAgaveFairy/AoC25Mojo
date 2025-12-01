@@ -69,17 +69,17 @@ Both methods receive the full path to the input file and should return the answe
 
 Run all days with full input:
 ```bash
-mojo main.mojo
+mojo run main.mojo
 ```
 
 Run day 1 with test input:
 ```bash
-mojo main.mojo 1 TEST
+mojo run main.mojo 1 TEST
 ```
 
 Run days 1, 3, and 5 with full input:
 ```bash
-mojo main.mojo 1,3,5 FULL
+mojo run main.mojo 1,3,5 FULL
 ```
 
 Run all days with full and test inputs:
@@ -95,7 +95,7 @@ python3 generate.py
 ### Command-Line Arguments
 
 ```
-mojo main.mojo [DAYS] [MODE]
+mojo run main.mojo [DAYS] [MODE]
 
 DAYS (optional):
   - Omit or use '0' to run all days (1-12)
@@ -112,7 +112,7 @@ MODE (optional, case insensitive):
 ### Help
 
 ```bash
-mojo main.mojo --help
+mojo run main.mojo --help
 ```
 
 ## Notes
