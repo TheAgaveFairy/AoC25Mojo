@@ -97,7 +97,6 @@ fn main():
             days = parseDays(args[1])
         if argc > 2:
             mode = String(args[2]).lower()
-    print(days.__str__())
     var results = run(days, mode)
 
     for result in results:
