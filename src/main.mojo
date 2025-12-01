@@ -88,7 +88,7 @@ fn main():
 
     if argc > 1:
         if args[1] == "--help":
-            print("./main -d -m, -d is the day[s] you want (separated by commas e.g. 1,2,3), and the mode is either 'test' or 'real' or 'both'")
+            print("./main -d -m, -d is the day[s] you want (separated by commas e.g. 1,2,3), and the mode is either 'test' or 'full' or 'both'")
         days = parseDays(args[1])
         if argc > 2:
             mode = String(args[2]).lower()
