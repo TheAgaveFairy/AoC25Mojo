@@ -19,15 +19,18 @@ struct Solution{day:02d}(Solution):
 def main():
     output_dir = "."
     os.makedirs(output_dir, exist_ok=True)
+
+    answer = input("Are you sure you want to continue resetting all solutions? Y/N")
+    if answer == 'Y':
     
-    for day in range(1, 13):
-        filename = os.path.join(output_dir, f"day{day:02d}.mojo")
-        content = TEMPLATE.format(day=day)
+        for day in range(1, 13):
+            filename = os.path.join(output_dir, f"day{day:02d}.mojo")
+            content = TEMPLATE.format(day=day)
         
-        with open(filename, "w") as f:
-            f.write(content)
+            with open(filename, "w") as f:
+                f.write(content)
         
-        print(f"Created {filename}")
+            print(f"Created {filename}")
 
 if __name__ == "__main__":
     main()

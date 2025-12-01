@@ -38,6 +38,8 @@ AoC25Mojo/
 
 Before running solutions, download the input files from [adventofcode.com](https://adventofcode.com/2025).
 
+There is a "generate.py" you can run to wipe out all of my solutions and start fresh. See "Basic Usage".
+
 For each day, save two files in the `inputs/` directory:
 - `test{NN}.txt` - The example input from the problem description
 - `full{NN}.txt` - Your actual puzzle input
@@ -82,7 +84,12 @@ mojo main.mojo 1,3,5 FULL
 
 Run all days with full and test inputs:
 ```bash
-mojo main.mojo 0, BOTH
+mojo main.mojo 0 BOTH
+```
+
+Wipe out all solutions and start fresh.
+```bash
+python3 generate.py
 ```
 
 ### Command-Line Arguments
