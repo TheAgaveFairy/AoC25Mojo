@@ -20,7 +20,7 @@ curl -fsSL https://pixi.sh/install.sh | bash
 AoC25Mojo/
 ├── main.mojo           # Entry point and dispatcher
 ├── solution.mojo       # Solution interface/trait, Result type, defines
-├── solutions/
+├── src/
 │   ├── day01.mojo
 │   ├── day02.mojo
 │   └── ... (day03 through day12)
@@ -80,6 +80,11 @@ Run days 1, 3, and 5 with full input:
 mojo main.mojo 1,3,5 FULL
 ```
 
+Run all days with full and test inputs:
+```bash
+mojo main.mojo 0, BOTH
+```
+
 ### Command-Line Arguments
 
 ```
@@ -101,22 +106,6 @@ MODE (optional, case insensitive):
 
 ```bash
 mojo main.mojo --help
-```
-
-## Examples
-
-```bash
-# Run all days with full input
-mojo main.mojo
-
-# Run day 5 with test input
-mojo main.mojo 5 TEST
-
-# Run days 1, 2, and 3 with full input
-mojo main.mojo 1,2,3 FULL
-
-# Run day 7 with both test and full input
-mojo main.mojo 7 BOTH
 ```
 
 ## Notes
