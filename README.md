@@ -7,9 +7,11 @@ A clean, organized framework for solving Advent of Code 2025 in Mojo with suppor
 ## Environment
 
 Use pixi! Install pixi, and enter the shell with "pixi shell" from inside the directory. 
-To install: ```bash
+To install:
+```bash
 curl -fsSL https://pixi.sh/install.sh | bash
 ```
+
 [Here's more information on pixi.](https://docs.modular.com/pixi/)
 
 ## Project Structure
