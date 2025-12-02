@@ -18,9 +18,11 @@ curl -fsSL https://pixi.sh/install.sh | bash
 
 ```
 AoC25Mojo/
-├── main.mojo           # Entry point and dispatcher
-├── solution.mojo       # Solution interface/trait, Result type, defines
+├── pixi.toml           # Pixi environment definitions
 ├── src/
+│   ├── main.mojo       # Entry point and dispatcher
+│   ├── solution.mojo   # Solution interface/trait, Result type, DaySummary type, defines
+│   ├── generate.py     # To clear *all* solutions and start with a fresh template.
 │   ├── day01.mojo
 │   ├── day02.mojo
 │   └── ... (day03 through day12)

@@ -1,7 +1,7 @@
 import sys # argv, stderr
 from utils import Variant
 
-from solution import Solution, Result, MODE_BOTH, MODE_TEST, MODE_FULL
+from solution import Solution, Result, DaySummary, MODE_BOTH, MODE_TEST, MODE_FULL
 import day01, day02, day03, day04, day05, day06, day07, day08, day09, day10, day11, day12
 
 #from python import Python
@@ -23,7 +23,7 @@ fn parseDays(str: StringSlice) -> List[Int]:
 
     return result.copy()
 
-fn runSoln(day: Int, mode: String) -> Result:
+fn runSoln(day: Int, mode: String) -> DaySummary:
     """
     No pattern matching yet. If day == 0, run all.
     """
@@ -64,10 +64,10 @@ fn runSoln(day: Int, mode: String) -> Result:
             var soln = day12.Solution12()
             return soln.run(mode)
         else: # could raise instead
-            return Result("-1", "FAILURE", "error", "error")
+            return DaySummary("-1", "FAILURE", Result.FAILURE, Result.FAILURE)
 
-fn run(days: List[Int], mode: String) -> List[Result]:
-    var results: List[Result] = []
+fn run(days: List[Int], mode: String) -> List[DaySummary]:
+    var results: List[DaySummary] = []
     
     for day in days:
         if day > 12 or day < 0:
@@ -97,7 +97,7 @@ fn main():
             days = parseDays(args[1])
         if argc > 2:
             mode = String(args[2]).lower()
-    var results = run(days, mode)
+    var summaries = run(days, mode)
 
-    for result in results:
-        print(result.__str__())
+    for summary in summaries:
+        print(summary.__str__())

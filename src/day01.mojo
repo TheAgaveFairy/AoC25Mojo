@@ -72,7 +72,7 @@ struct Solution01(Solution):
                 return "ERROR"
 
         var times_hit_zero = lock.runInstructions(instructions, 1)
-
+        
         return String(times_hit_zero)
 
     fn partTwo(self, input_file: String) -> String:
@@ -88,5 +88,4 @@ struct Solution01(Solution):
                 return "ERROR"
 
         var times_hit_zero = lock.runInstructions(instructions, 2)
-
         return String(times_hit_zero)

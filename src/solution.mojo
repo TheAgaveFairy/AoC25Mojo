@@ -1,6 +1,7 @@
 from pathlib import Path
 from builtin._location import __call_location
 from sys import stderr
+from time import perf_counter_ns
 
 # sum types :()
 comptime MODE_BOTH = "both"
@@ -17,36 +18,65 @@ comptime COLOR_PURPLE = "\x1b[35m"
 fn coloredString(str: String, color: String = COLOR_YELLOW) -> String:
     return String(color + str + COLOR_RESET)
 
+@fieldwise_init
 struct Result(Copyable & Movable & ImplicitlyCopyable):
+    var results: String
+    var time_ns: UInt
+
+    comptime FAILURE = Self("error", 0)
+    comptime UnitMS = "ms"
+    comptime UnitUS = "us"
+    comptime UnitNS = "ns"
+
+    fn asFormattedString(self, unit: String = Self.UnitNS) -> String
+        var base = "Result: " + coloredString(self.results, COLOR_PURPLE)
+        var time = self.time_ns
+        if unit == Result.UnitMS:
+            time /= 1_000_000
+        if unit == Result.UnitUS:
+            time /= 1_000
+        if unit == Result.UnitNS:
+            continue
+        var add_time = " took " + coloredString(String(time), COLOR_PURPLE) + " " + unit
+        return base + add_time
+
+    fn __str__(self) -> String:
+        var base = "Result: " + coloredString(self.results, COLOR_PURPLE)
+        var add_time = " took " + coloredString(String(self.time_ns), COLOR_PURPLE) + " ns"
+        return base + add_time
+
+struct DaySummary(Copyable & Movable & ImplicitlyCopyable):
     var day_str: String
     var mode: String
-    var results: InlineArray[String, 2]
+    var part_one: Result
+    var part_two: Result
 
-    fn __init__(out self, day_str: String, mode: String, part_one: String, part_two: String):
+    fn __init__(out self, day_str: String, mode: String, part_one: Result, part_two: Result):
         self.day_str = day_str
         self.mode = mode
-        self.results = InlineArray[String, 2](uninitialized = True)
-        self.results[0] = part_one
-        self.results[1] = part_two
+        self.part_one = part_one
+        self.part_two = part_two
 
     fn __str__(self) -> String:
         var header = coloredString("Day") + " " + self.day_str + \
             " " + coloredString("Mode: ") + self.mode
+        
+        var str_one = coloredString("Part One: ", COLOR_PURPLE) + self.part_one.__str__()
+        var str_two = coloredString("Part Two: ", COLOR_PURPLE) + self.part_two.__str__()
 
-        var part_one = "Part One: " + coloredString(self.results[0], COLOR_PURPLE)
-        var part_two = "Part Two: " + coloredString(self.results[1], COLOR_PURPLE)
-
-        return header + "\n\t" + part_one + "\n\t" + part_two
+        return header + "\n\t" + str_one + "\n\t" + str_two
     
     fn __copyinit_(self, other: Result):
         self.day_str = other.day_str
         self.mode = other.mode
-        self.results = other.results
+        self.part_one = other.part_one
+        self.part_two = other.part_two
     
     fn __moveinit__(out self, deinit existing: Self):
         self.day_str = existing.day_str
         self.mode = existing.mode
-        self.results = existing.results
+        self.part_one = existing.part_one
+        self.part_two = existing.part_two
 
 trait Solution:
     @staticmethod
@@ -55,17 +85,33 @@ trait Solution:
         var this_path = __call_location().file_name
         var this_filename = Path(this_path).name()
         var day_str = this_filename[3:5]
-        return String(day_str) # longpath/day__.mojo
+        return String(day_str) # day__.mojo
 
-    fn run(self, mode: String) -> Result:
+    fn run(self, mode: String) -> DaySummary:
         #print(self.getDayString() + " running")
         try:
             var input_string = self.getFile(mode)
-            var result = Result(self.getDayString(), mode, self.partOne(input_string), self.partTwo(input_string))
-            return result
-        except e:
+
+            var start_time = perf_counter_ns()
+            var part_one = self.partOne(input_string)
+            var mid_time = perf_counter_ns()
+            var part_two = self.partTwo(input_string)
+            var end_time = perf_counter_ns()
+            
+            var elapsed_one = mid_time - start_time
+            var elapsed_two = end_time - mid_time
+
+            var result_one = Result(part_one, elapsed_one)
+            var result_two = Result(part_two, elapsed_two)
+            
+            var day_summary = DaySummary(self.getDayString(), mode, result_one, result_two)
+            return day_summary
+
+        except e: # TODO: error handle each part individually
             print(e, file = stderr)
-            return Result(self.getDayString(), mode, "error", "error")
+            var part_one = Result.FAILURE
+            var part_two = Result.FAILURE
+            return DaySummary(self.getDayString(), mode, part_one, part_two)
 
     fn getFile(self, mode: String) raises -> String:
         var filename = mode + self.getDayString() + ".txt"
