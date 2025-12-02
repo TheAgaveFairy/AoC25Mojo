@@ -48,11 +48,11 @@ For each day, save two files in the `inputs/` directory:
 
 There is a "generate.py" you can run to wipe out all of my solutions and start fresh. See "Basic Usage".
 
-Each day is a separate file in `solutions/`. Open `day01.mojo` and implement:
+Each day is a separate file in `solutions/`. Open `day{NN}.mojo` and implement:
 
 ```mojo
 @fieldwise_init
-struct Solution01(Solution):
+struct Solution{NN}(Solution):
     
     fn partOne(self, input_file: String) -> String:
         # Read from input_file, solve part 1
@@ -126,8 +126,8 @@ mojo run main.mojo --help
 
 | Day | Part 1 | Time (μs) | Part 2 | Time (μs) |
 |-----|--------|-----------|--------|-----------|
-| 01  | ✅     | —         | ✅     | —         |
-| 02  | ✅     | —         | ⏳     | —         |
+| 01  | ✅     | 1232      | ✅     | 912       |
+| 02  | ✅     | 38244     | ✅     | 65089     |
 | 03  | ❌     | —         | ❌     | —         |
 | 04  | ❌     | —         | ❌     | —         |
 | 05  | ❌     | —         | ❌     | —         |

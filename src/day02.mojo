@@ -26,13 +26,12 @@ struct ProductIDRange(Copyable & Movable & ImplicitlyCopyable):
         return total
 
     fn getInvalidsTwo(self) -> Int:
-
         var total: Int = 0
 
         for pid in range(self.start, self.end + 1):
             var s = String(pid)
-            if len(s) % 2 == 1 or s[0] == '0': # TODO: check on the meaning of that second case
-                continue
+            #if len(s) % 2 == 1 or s[0] == '0': # TODO: check on the meaning of that second case
+                #continue
 
             fn isInvalidHelper() -> Bool:
                 var n = len(s)
@@ -45,16 +44,16 @@ struct ProductIDRange(Copyable & Movable & ImplicitlyCopyable):
 
                     var substr = s[:i]
                     var invalid = True
-                    print("\nsearching for", substr, "in", s, end = ":\n\t")
+                    #print("\nsearching for", substr, "in", s, end = ":\n\t")
                     # check all next patterns
                     for ii in range(i, n, i):
-                        print(s[ii:ii+i], "?", end = " ")
+                        #print(s[ii:ii+i], "?", end = " ")
                         if s[ii:ii+i] != substr:
                             invalid = False
                             break
                     if invalid:
-                        print("\n\t****************invalid!", s)
-                        return True # True
+                        #print("\n\t****************invalid!", s)
+                        return True
                 # default
                 return False
 

@@ -42,7 +42,7 @@ struct Result(Copyable & Movable & ImplicitlyCopyable):
 
     fn __str__(self) -> String:
         var base = "Result: " + coloredString(self.results, COLOR_PURPLE)
-        var add_time = " took " + coloredString(String(self.time_ns), COLOR_PURPLE) + " ns"
+        var add_time = " took " + coloredString(String(self.time_ns // 1_000), COLOR_PURPLE) + " us"
         return base + add_time
 
 struct DaySummary(Copyable & Movable & ImplicitlyCopyable):
@@ -122,7 +122,8 @@ trait Solution:
             return contents
         except e:
             #print(e)
-            raise Error("error getting input file: " + filename)
+            var err_str = coloredString("error getting input file: " + filename, COLOR_RED)
+            raise Error(err_str)
         
     # implement these two
     fn partOne(self, input_file: String) -> String: ...
