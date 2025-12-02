@@ -3,8 +3,7 @@
 
 import os
 
-TEMPLATE = '''from sys import stderr
-from solution import Solution
+TEMPLATE = '''from solution import Solution
 
 @fieldwise_init
 struct Solution{day:02d}(Solution):
