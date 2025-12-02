@@ -31,8 +31,6 @@ struct ProductIDRange(Copyable & Movable & ImplicitlyCopyable):
 
         for pid in range(self.start, self.end + 1):
             var s = String(pid)
-            #if len(s) % 2 == 1 or s[0] == '0': # TODO: check on the meaning of that second case
-                #continue
 
             # closure gives better control flow with early returns
             fn isInvalidHelper() -> Bool:

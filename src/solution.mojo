@@ -12,6 +12,7 @@ comptime COLOR_RESET =  "\x1b[0m"
 comptime COLOR_WHITE =  "\x1b[37"
 comptime COLOR_GREEN =  "\x1b[32m"
 comptime COLOR_RED =    "\x1b[31m"
+comptime COLOR_BLUE =   "\x1b[34m"
 comptime COLOR_YELLOW = "\x1b[33m"
 comptime COLOR_PURPLE = "\x1b[35m"
 
@@ -58,13 +59,14 @@ struct DaySummary(Copyable & Movable & ImplicitlyCopyable):
         self.part_two = part_two
 
     fn __str__(self) -> String:
+        var tab = "  "
         var header = coloredString("Day") + " " + self.day_str + \
             " " + coloredString("Mode: ") + self.mode
         
-        var str_one = coloredString("Part One: ", COLOR_PURPLE) + self.part_one.__str__()
-        var str_two = coloredString("Part Two: ", COLOR_PURPLE) + self.part_two.__str__()
+        var str_one = coloredString("Part One:\n" + (tab * 2), COLOR_BLUE) + self.part_one.__str__()
+        var str_two = coloredString("Part Two:\n" + (tab * 2), COLOR_BLUE) + self.part_two.__str__()
 
-        return header + "\n\t" + str_one + "\n\t" + str_two
+        return header + "\n" + tab + str_one + "\n" + tab + str_two
     
     fn __copyinit_(self, other: Result):
         self.day_str = other.day_str
