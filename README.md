@@ -121,3 +121,28 @@ mojo run main.mojo --help
 
 - Input files are read as strings; parse them as needed in your solution
 - Return all answers as `String` types from both `partOne` and `partTwo`
+
+## Progress and Results
+
+| Day | Part 1 | Time (μs) | Part 2 | Time (μs) |
+|-----|--------|-----------|--------|-----------|
+| 01  | ✅     | —         | ✅     | —         |
+| 02  | ✅     | —         | ⏳     | —         |
+| 03  | ❌     | —         | ❌     | —         |
+| 04  | ❌     | —         | ❌     | —         |
+| 05  | ❌     | —         | ❌     | —         |
+| 06  | ❌     | —         | ❌     | —         |
+| 07  | ❌     | —         | ❌     | —         |
+| 08  | ❌     | —         | ❌     | —         |
+| 09  | ❌     | —         | ❌     | —         |
+| 10  | ❌     | —         | ❌     | —         |
+| 11  | ❌     | —         | ❌     | —         |
+| 12  | ❌     | —         | ❌     | —         |
+
+**Legend:** ✅ = Complete | ⏳ = In Progress | ❌ = Not Started
+
+## System Specs
+
+- **CPU:** Ryzen 7 7600X
+- **RAM:** 32GB DDR5-6000 (custom timings)
+- **GPU:** RTX 3070
