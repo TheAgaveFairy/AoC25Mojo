@@ -1,4 +1,5 @@
 from solution import Solution
+from algorithm.functional import parallelize #, vectorize
 
 @fieldwise_init
 struct ProductIDRange(Copyable & Movable & ImplicitlyCopyable):
@@ -33,6 +34,7 @@ struct ProductIDRange(Copyable & Movable & ImplicitlyCopyable):
             #if len(s) % 2 == 1 or s[0] == '0': # TODO: check on the meaning of that second case
                 #continue
 
+            # closure gives better control flow with early returns
             fn isInvalidHelper() -> Bool:
                 var n = len(s)
                 var half = n // 2
@@ -78,35 +80,43 @@ fn parseInput(input_file: String) raises -> List[ProductIDRange]:
 
     return pid_ranges.copy()
 
+fn parallelSum[part_one: Bool](pid_ranges: List[ProductIDRange]) -> Int:
+    var n = len(pid_ranges)
+    var totals = List[Int](capacity = n)
+    
+    @parameter
+    fn parallel_closure(tid: Int):
+        #print("running", tid, pid_ranges[tid].__str__())
+        @parameter
+        if part_one:
+            totals[tid] = pid_ranges[tid].getInvalidsOne()
+        else:
+            totals[tid] = pid_ranges[tid].getInvalidsTwo()
+    parallelize[parallel_closure](n)
+
+    var total = 0
+    for i in range(n):
+        var t = totals[i]
+        #print(String(t))
+        total += t
+    return total
+
 @fieldwise_init
 struct Solution02(Solution):
     
     fn partOne(self, input_file: String) -> String:
-        var pid_strs = input_file.split(',')
-
-        var total: Int = 0
-        for pr in pid_strs:
-            var parts = pr.split('-')
-            try:
-                var start = Int(parts[0])
-                var end = Int(parts[1])
-                var pid_range = ProductIDRange(start, end)
-                var invalids_sum = pid_range.getInvalidsOne()
-                #print(pid_range.__str__())
-                total += invalids_sum
-            except e:
-                return String(e)
-
-        return String(total)
-
-    fn partTwo(self, input_file: String) -> String:
-        var total: Int = 0
         try:
-            var pid_ranges = parseInput(input_file) # raises
-            for pr in pid_ranges:
-                total += pr.getInvalidsTwo()
+            var pid_ranges = parseInput(input_file)
+            var total = parallelSum[True](pid_ranges)
+            return String(total)
         except e:
             return String(e)
 
+    fn partTwo(self, input_file: String) -> String:
+        try:
+            var pid_ranges = parseInput(input_file) # raises
+            var total = parallelSum[False](pid_ranges)
+            return String(total)
+        except e:
+            return String(e)
 
-        return String(total)
