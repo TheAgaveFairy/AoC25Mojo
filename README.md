@@ -124,11 +124,13 @@ mojo run main.mojo --help
 
 ## Progress and Results
 
+Times are without file reading - I'll edit that later.
+
 | Day | Part 1 | Time (μs) | Part 2 | Time (μs) |
 |-----|--------|-----------|--------|-----------|
 | 01  | ✅     | 1232      | ✅     | 912       |
 | 02  | ✅     | 15223     | ✅     | 22256     |
-| 03  | ✅     | 36        | ❌     | —         |
+| 03  | ✅     | 21        | ✅     | 58        |
 | 04  | ❌     | —         | ❌     | —         |
 | 05  | ❌     | —         | ❌     | —         |
 | 06  | ❌     | —         | ❌     | —         |
