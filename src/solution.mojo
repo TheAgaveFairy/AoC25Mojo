@@ -26,7 +26,7 @@ struct Result(Copyable & Movable & ImplicitlyCopyable):
 
     comptime FAILURE = Self("error", 0)
     comptime UnitMS = "ms"
-    comptime UnitUS = "us"
+    comptime UnitUS = "μs"
     comptime UnitNS = "ns"
 
     fn asFormattedString(self, unit: String = Self.UnitNS) -> String
@@ -43,7 +43,7 @@ struct Result(Copyable & Movable & ImplicitlyCopyable):
 
     fn __str__(self) -> String:
         var base = "Result: " + coloredString(self.results, COLOR_PURPLE)
-        var add_time = " took " + coloredString(String(self.time_ns // 1_000), COLOR_PURPLE) + " us"
+        var add_time = " took " + coloredString(String(self.time_ns // 1_000), COLOR_PURPLE) + " " + Self.UnitUS
         return base + add_time
 
 struct DaySummary(Copyable & Movable & ImplicitlyCopyable):
