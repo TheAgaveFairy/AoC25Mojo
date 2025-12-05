@@ -2,6 +2,11 @@ from sys import stderr
 from solution import Solution
 from algorithm.functional import vectorize, parallelize
 from collections import Set
+from sys.info import simd_width_of
+
+comptime itype = DType.uint32
+comptime sitype = Scalar[itype]
+comptime nelts = simd_width_of[itype]()
 
 @fieldwise_init 
 struct MyRange(Copyable & Movable & Writable & Representable & Comparable):
@@ -65,23 +70,37 @@ struct Kitchen(ImplicitlyCopyable):
         self.ranges = existing.ranges.copy()
         self.ids = existing.ids.copy()
 
+fn mergeRanges(ranges: List[MyRange]) -> List[MyRange]:
+    var merged: List[MyRange] = []
+    for r in ranges:
+        if not merged or merged[-1].upper < r.lower:
+            merged.append(r.copy())
+        else:
+            merged[-1].upper = max(merged[-1].upper, r.upper)
+    return merged.copy()#^
+
 @fieldwise_init
 struct Solution05(Solution):
     
     fn partOne(self, input_file: String) -> String:
+        var ans = 0
         var kitchen = Kitchen(input_file)
         var num_prods = len(kitchen.ids)
-        var results = List[Bool](length = num_prods, fill = False)
+        var results = List[sitype](length = num_prods, fill = 0)
+        sort(kitchen.ranges)
+        kitchen.ranges = mergeRanges(kitchen.ranges)
         fn inRanges(i: Int) capturing:
             for r in kitchen.ranges:
                 if kitchen.ids[i] in r:
-                    results[i] = True
-        parallelize[inRanges](num_prods, 12)
-
-        var ans = 0
-        for b in results:
-            if b:
-                ans += 1
+                    results[i] = 1
+        parallelize[inRanges](num_prods, 1) # parallelizing not worth
+        
+        fn reduceAdd[width: Int](i: Int) unified {mut}:
+            var vec = results.unsafe_ptr().load[width = width](i)
+            ans += Int(vec.reduce_add())
+        #for b in results:
+        #    ans += b
+        vectorize[nelts](num_prods, reduceAdd)
         return String(ans)
 
     fn partTwo(self, input_file: String) -> String:
@@ -100,13 +119,7 @@ struct Solution05(Solution):
                 print(e)
 
         sort(ranges)
-
-        var merged: List[MyRange] = []
-        for r in ranges:
-            if not merged or merged[-1].upper < r.lower:
-                merged.append(r.copy())
-            else:
-                merged[-1].upper = max(merged[-1].upper, r.upper)
+        var merged = mergeRanges(ranges)
         var count = 0
         for m in merged:
             count += m.countValid()
