@@ -124,7 +124,7 @@ mojo run main.mojo --help
 
 ## Progress and Results
 
-Times are without file reading - I'll edit that later.
+Times are *without* initial file reading - we're starting with the input file fresh for each part. Part two is fully independent from part one - this is just a choice I made.
 
 | Day | Part 1 | Time (μs) | Part 2 | Time (μs) |
 |-----|--------|-----------|--------|-----------|
@@ -133,7 +133,7 @@ Times are without file reading - I'll edit that later.
 | 03  | ✅     | 13        | ✅     | 58        |
 | 04  | ✅     | 94        | ✅ GPU | 312195    |
 | 05  | ✅     | 104       | ✅     | 43        |
-| 06  | ❌     | —         | ❌     | —         |
+| 06  | ✅     | 99        | ✅     | 118       |
 | 07  | ❌     | —         | ❌     | —         |
 | 08  | ❌     | —         | ❌     | —         |
 | 09  | ❌     | —         | ❌     | —         |
