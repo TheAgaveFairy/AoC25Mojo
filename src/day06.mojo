@@ -1,7 +1,7 @@
 from sys import stderr
 from solution import Solution
 
-@always_inline
+@always_inline("nodebug")
 fn unsafeAtol(text: StringSlice) -> Int:
     var ans = 0
     for c in text.as_bytes():
@@ -9,14 +9,13 @@ fn unsafeAtol(text: StringSlice) -> Int:
         ans += Int(c) - ord('0')
     return ans
 
-@always_inline
+@always_inline("nodebug")
 fn unsafeCtol(char: Byte) -> Int:
     return Int(char) - ord('0')
 
 @fieldwise_init
 struct CephCol(Copyable, Movable, Representable):
     var nums: List[Int]
-    #var max_num_digits: Int
     var op: String
 
     fn __init__(out self, digits: Int, op: Byte):
@@ -29,10 +28,6 @@ struct CephCol(Copyable, Movable, Representable):
             if byte != ord(' '):
                 self.nums[i] *= 10
                 self.nums[i] += unsafeCtol(byte)
-
-        #self.nums.append(num) # TODO: 
-        
-        #self.max_num_digits = max(self.max_num_digits, num_digits)
 
     fn calculateTotal(self) -> Int:
         if self.op == "+":
