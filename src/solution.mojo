@@ -2,11 +2,12 @@ from pathlib import Path
 from builtin._location import __call_location
 from sys import stderr
 from time import perf_counter_ns
+from aocparser import ModeEnum
 
 # sum types :()
-comptime MODE_BOTH = "both"
-comptime MODE_TEST = "test"
-comptime MODE_FULL = "full"
+#comptime MODE_BOTH = "both"
+#comptime MODE_TEST = "test"
+#comptime MODE_FULL = "full"
 
 comptime COLOR_RESET =  "\x1b[0m"
 comptime COLOR_WHITE =  "\x1b[37"

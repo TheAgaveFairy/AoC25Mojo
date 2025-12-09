@@ -20,6 +20,7 @@ struct Solution07(Solution):
         for i, char in enumerate(lines[0].as_bytes()):
             if Int(char) == ord('S'):
                 state[i] = 1
+                break
         #print(state)
 
         var splits = 0
@@ -35,7 +36,7 @@ struct Solution07(Solution):
         return String(splits)
 
     fn partTwo(self, input_file: String) -> String:
-        var parser = CLIParser()
+        #var parser = CLIParser()
         var lines = input_file.split("\n")
         if not len(lines[-1]):
             _ = lines.pop()
@@ -48,6 +49,7 @@ struct Solution07(Solution):
         for i, char in enumerate(lines[0].as_bytes()):
             if Int(char) == ord('S'):
                 state[i] = 1
+                break
 
         var splits = 0
         for line in lines[2::2]:
@@ -57,7 +59,7 @@ struct Solution07(Solution):
                         state[i - 1] = state[i] + state[i - 1] #+ 1
                         state[i + 1] = state[i] + state[i + 1] #+ 1
                         state[i] = 0
-            print(line, state)
+            #print(line, state)
         for s in state:
             splits += s
         return String(splits)

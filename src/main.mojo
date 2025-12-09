@@ -1,26 +1,8 @@
 import sys # argv, stderr
 
-from solution import Solution, Result, DaySummary, MODE_BOTH, MODE_TEST, MODE_FULL
+from solution import Solution, Result, DaySummary#, MODE_BOTH, MODE_TEST, MODE_FULL
+from aocparser import AoCParser, ModeEnum
 import day01, day02, day03, day04, day05, day06, day07, day08, day09, day10, day11, day12
-
-#from python import Python
-
-comptime ALL_DAYS: List[Int] = [1,2,3,4,5,6,7,8,9,10,11,12]
-
-fn parseDays(str: StringSlice) -> List[Int]:
-    var days = str.split(",")
-    var n = len(days)
-    var result = List[Int](capacity = n)
-    for day in days:
-        try:
-            var temp = Int(day)
-            if temp == 0:
-                return materialize[ALL_DAYS]() # no need to process the others, run all
-            result.append(temp)
-        except e:
-            print(e)
-
-    return result.copy()
 
 fn runSoln(day: Int, mode: String) -> DaySummary:
     """
@@ -69,20 +51,19 @@ fn run(days: List[Int], mode: String) -> List[DaySummary]:
     var results: List[DaySummary] = []
     
     for day in days:
-        if day > 12 or day < 0:
-            print("Day not in range!" + String(day), file=sys.stderr)
 
-        elif mode == MODE_BOTH:
-            results.append(runSoln(day, MODE_TEST))
-            results.append(runSoln(day, MODE_FULL))
-        elif mode == MODE_TEST:
-            results.append(runSoln(day, MODE_TEST))
+        if mode == ModeEnum.BOTH:
+            results.append(runSoln(day, ModeEnum.TEST))
+            results.append(runSoln(day, ModeEnum.FULL))
+        elif mode == ModeEnum.TEST:
+            results.append(runSoln(day, ModeEnum.TEST))
         else:
-            results.append(runSoln(day, MODE_FULL))
+            results.append(runSoln(day, ModeEnum.FULL))
 
     return results.copy()
 
 fn main():
+    _ = """
     var args = sys.argv()
     var argc = len(args)
     var days: List[Int] = materialize[ALL_DAYS]()
@@ -96,7 +77,14 @@ fn main():
             days = parseDays(args[1])
         if argc > 2:
             mode = String(args[2]).lower()
-    var summaries = run(days, mode)
+    """
+    var parser = AoCParser()
+    if parser.had_error:
+        print("Errors detected, aborting.", file = sys.stderr)
+        return
+
+    # TODO : implement custom filename handling and runs
+    var summaries = run(parser.days, parser.mode)
 
     for summary in summaries:
         print(summary.__str__())
