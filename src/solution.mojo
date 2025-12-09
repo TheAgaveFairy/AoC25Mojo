@@ -50,19 +50,22 @@ struct Result(Copyable & Movable & ImplicitlyCopyable):
 struct DaySummary(Copyable & Movable & ImplicitlyCopyable):
     var day_str: String
     var mode: String
+    var runs: Int
     var part_one: Result
     var part_two: Result
 
-    fn __init__(out self, day_str: String, mode: String, part_one: Result, part_two: Result):
+    fn __init__(out self, day_str: String, mode: String, runs: Int, part_one: Result, part_two: Result):
         self.day_str = day_str
         self.mode = mode
+        self.runs = runs
         self.part_one = part_one
         self.part_two = part_two
 
     fn __str__(self) -> String:
         var tab = "  "
         var header = coloredString("Day") + " " + self.day_str + \
-            " " + coloredString("Mode: ") + self.mode
+            " " + coloredString("Mode: ") + self.mode + \
+            " " + coloredString("Runs: ") + String(self.runs)
         
         var str_one = coloredString("Part One:\n" + (tab * 2), COLOR_BLUE) + self.part_one.__str__()
         var str_two = coloredString("Part Two:\n" + (tab * 2), COLOR_BLUE) + self.part_two.__str__()
@@ -72,12 +75,14 @@ struct DaySummary(Copyable & Movable & ImplicitlyCopyable):
     fn __copyinit_(self, other: Result):
         self.day_str = other.day_str
         self.mode = other.mode
+        self.runs = other.runs
         self.part_one = other.part_one
         self.part_two = other.part_two
     
     fn __moveinit__(out self, deinit existing: Self):
         self.day_str = existing.day_str
         self.mode = existing.mode
+        self.runs = existing.runs
         self.part_one = existing.part_one
         self.part_two = existing.part_two
 
@@ -90,31 +95,39 @@ trait Solution:
         var day_str = this_filename[3:5]
         return String(day_str) # day__.mojo
 
-    fn run(self, mode: String) -> DaySummary:
+    fn run(self, mode: String, runs: Int) -> DaySummary:
         #print(self.getDayString() + " running")
+        var total_time_one_ns: UInt = 0
+        var total_time_two_ns: UInt = 0
+        var part_one = ""
+        var part_two = ""
         try:
             var input_string = self.getFile(mode)
 
-            var start_time = perf_counter_ns()
-            var part_one = self.partOne(input_string)
-            var mid_time = perf_counter_ns()
-            var part_two = self.partTwo(input_string)
-            var end_time = perf_counter_ns()
-            
-            var elapsed_one = mid_time - start_time
-            var elapsed_two = end_time - mid_time
+            for _ in range(runs):
+                var start_time = perf_counter_ns()
+                part_one = self.partOne(input_string)
+                var mid_time = perf_counter_ns()
+                part_two = self.partTwo(input_string)
+                var end_time = perf_counter_ns()
+                
+                var elapsed_one = mid_time - start_time
+                var elapsed_two = end_time - mid_time
+                total_time_one_ns += elapsed_one
+                total_time_two_ns += elapsed_two
 
-            var result_one = Result(part_one, elapsed_one)
-            var result_two = Result(part_two, elapsed_two)
+            var result_one = Result(part_one, total_time_one_ns // UInt(runs))
+            var result_two = Result(part_two, total_time_two_ns // UInt(runs))
             
-            var day_summary = DaySummary(self.getDayString(), mode, result_one, result_two)
+            var day_summary = DaySummary(self.getDayString(), mode, runs, result_one, result_two)
+            print(day_summary.__str__())
             return day_summary
 
         except e: # TODO: error handle each part individually
             print(e, file = stderr)
-            var part_one = Result.FAILURE
-            var part_two = Result.FAILURE
-            return DaySummary(self.getDayString(), mode, part_one, part_two)
+            var day_summary = DaySummary(self.getDayString(), mode, runs, Result.FAILURE, Result.FAILURE)
+            print(day_summary.__str__())
+            return day_summary
 
     fn getFile(self, mode: String) raises -> String:
         var filename = mode + self.getDayString() + ".txt"

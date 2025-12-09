@@ -30,7 +30,7 @@ struct AoCParser(Copyable, Movable, ImplicitlyCopyable, Writable, Representable)
     fn __init__(out self):
         var args = argv()
         # defaults
-        self.mode = ModeEnum.BOTH
+        self.mode = ModeEnum.FULL
         self.filename = type_of(self.filename)(None)
         self.runs = 1
         self.had_error = False
