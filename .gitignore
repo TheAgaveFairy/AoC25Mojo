@@ -4,3 +4,4 @@
 *.egg-info
 bugreport.mojo
 main
+*.txt
